@@ -61,7 +61,7 @@ jobs:
         working-directory: ios
 
       - name: Build IOS App
-        run: xcodebuild -workspace TestCiCd.xcworkspace -allowProvisioningUpdates -scheme TestCiCd -archivePath TestCiCd.xcarchive archive
+        run: xcodebuild -workspace TestCiCd.xcworkspace -scheme TestCiCd -archivePath TestCiCd.xcarchive archive
         working-directory: ios
         
       - name: Export IPA
