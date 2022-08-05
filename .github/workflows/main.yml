@@ -73,11 +73,16 @@ jobs:
           scheme: TestCiCd
           export-method: development
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+      - name: upload artefact to App Center
+        uses: Coxxs/AppCenter-Github-Action@v1
         with:
-          name: Gakko IOS IPA
-          path: 'output.ipa'
+          appName: ${{secrets.RECUPE_IOS_DEV}}
+          token: ${{secrets.RECUPE_IOS_DEV_API}}
+          group: Collaborators
+          file: output.ipa
+          notifyTesters: false
+          debug: false
+          gitReleaseNotes: true
           
       - name: Clean up keychain and provisioning profile
         if: ${{ always() }}
