@@ -59,20 +59,25 @@ jobs:
       - name: Install Pods
         run: pod install
         working-directory: ios
-
-      - name: Build IOS App
-        run: xcodebuild -workspace TestCiCd.xcworkspace -scheme TestCiCd -archivePath TestCiCd.xcarchive archive
-        working-directory: ios
         
-      - name: Export IPA
-        run: xcodebuild -exportArchive -archivePath TestCiCd.xcarchive -exportPath out -exportOptionsPlist TestCiCd.xcarchive/Info.plist
-        working-directory: ios
+      - name: Build IOS App
+        uses: yukiarrr/ios-build-action@v1.4.0
+        with:
+          project-path: ios/TestCiCd.xcodeproj
+          p12-base64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          mobileprovision-base64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64_DEV }}
+          code-signing-identity: 'Apple Development'
+          team-id: ${{ secrets.IOS_TEAM_ID }}
+          certificate-password: ${{ secrets.P12_PASSWORD }}
+          workspace-path: ios/TestCiCd.xcworkspace
+          scheme: TestCiCd
+          export-method: development
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: Gakko IOS IPA
-          path: 'out/TestCiCd.ipa'
+          path: 'output.ipa'
           
       - name: Clean up keychain and provisioning profile
         if: ${{ always() }}
